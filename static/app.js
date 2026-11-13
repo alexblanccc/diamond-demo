@@ -156,12 +156,15 @@ function renderDynamic(instant) {
         const tag = isKz ? (x.tag_kz || x.tag) : x.tag;
         const bookBtn = isKz ? "Жазылу" : "Записаться";
         return `<article class="card reveal" style="--d:${i % 4}">
-          <div class="svc-ico"><svg viewBox="0 0 24 24">${iconFor(x.title)}</svg></div>
+          <div class="svc-head">
+            <div class="svc-ico"><svg viewBox="0 0 24 24">${iconFor(x.title)}</svg></div>
+            ${tag ? `<span class="svc-badge">${esc(tag)}</span>` : ""}
+          </div>
           <h3>${x.slug ? `<a class="svc-link" href="/uslugi/${esc(x.slug)}">${esc(title)}</a>` : esc(title)}</h3>
           <p>${esc(desc)}</p>
           ${x.slug ? `<a class="svc-more" href="/uslugi/${esc(x.slug)}">${isKz ? "Толығырақ →" : "Подробнее →"}</a>` : ""}
           <div class="card-foot">
-            ${price ? `<span class="price">${priceHtml(price)}</span>` : tag ? `<span class="tag">${esc(tag)}</span>` : "<span></span>"}
+            <span class="price">${priceHtml(price || (isKz ? "Кеңес 0 ₸" : "Консультация 0 ₸"))}</span>
             <a class="btn btn-ghost" href="#book" data-service="${esc(title)}">${bookBtn}</a>
           </div>
         </article>`;
