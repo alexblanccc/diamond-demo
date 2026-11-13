@@ -1,0 +1,74 @@
+[
+ {
+  "id": "hero",
+  "text": "Здравствуйте! Это сайт, который я сделал для клиники Diamond. Здесь уже ваши услуги, цены, акция на чистку и рассрочка Kaspi.",
+  "file": "/Users/blanc/diamond-demo/video/voice/00_hero_ac4396f4e8f3.mp3",
+  "dur": 7.059
+ },
+ {
+  "id": "services",
+  "text": "Цены написаны понятно, без звонков и переписок. Пациент сразу видит, сколько стоит лечение.",
+  "file": "/Users/blanc/diamond-demo/video/voice/01_services_a30f054d5ed8.mp3",
+  "dur": 5.666
+ },
+ {
+  "id": "doctors",
+  "text": "Дальше ваши врачи и настоящие отзывы пациентов из два-гис. Показываются только пятизвёздочные и свежие.",
+  "file": "/Users/blanc/diamond-demo/video/voice/02_doctors_d1003ab90d09.mp3",
+  "dur": 7.152
+ },
+ {
+  "id": "lang",
+  "text": "Весь сайт работает на русском и казахском языке, переключение одной кнопкой.",
+  "file": "/Users/blanc/diamond-demo/video/voice/03_lang_2fe7c807dfc1.mp3",
+  "dur": 4.319
+ },
+ {
+  "id": "reels",
+  "text": "Видео из вашего инстаграма прямо на сайте, а в конце карта два-гис с маршрутом до клиники.",
+  "file": "/Users/blanc/diamond-demo/video/voice/04_reels_127d0cd331b9.mp3",
+  "dur": 5.619
+ },
+ {
+  "id": "book",
+  "text": "Главное: онлайн-запись. Пациент выбирает услугу, свободный день и время. Занятое время недоступно, поэтому двух пациентов на одно время не будет.",
+  "file": "/Users/blanc/diamond-demo/video/voice/05_book_b9075bef0231.mp3",
+  "dur": 8.684
+ },
+ {
+  "id": "submit",
+  "text": "После отправки открывается ваш вотсап с готовым сообщением, а заявка сразу попадает в CRM.",
+  "file": "/Users/blanc/diamond-demo/video/voice/06_submit_e2269b18b686.mp3",
+  "dur": 5.433
+ },
+ {
+  "id": "crm",
+  "text": "Это CRM. Я показываю её на тестовых заявках. На главном экране видно, кто ждёт ответа, кто записан на завтра и сколько оплачено за месяц.",
+  "file": "/Users/blanc/diamond-demo/video/voice/07_crm_4e037ba32814.mp3",
+  "dur": 8.545
+ },
+ {
+  "id": "pipeline",
+  "text": "Каждый пациент проходит путь от заявки до оплаты. Карточку можно перетащить мышкой, а напоминание о приёме отправить в вотсап в один клик.",
+  "file": "/Users/blanc/diamond-demo/video/voice/08_pipeline_78ceba4d592f.mp3",
+  "dur": 8.591
+ },
+ {
+  "id": "stats",
+  "text": "Статистика показывает, сколько заявок дошло до оплаты, какие услуги приносят выручку и откуда приходят пациенты.",
+  "file": "/Users/blanc/diamond-demo/video/voice/09_stats_f9cbfa2410dd.mp3",
+  "dur": 7.059
+ },
+ {
+  "id": "edit",
+  "text": "Цены, акции, врачей и отзывы вы меняете сами, без программиста. Нажали сохранить, и на сайте уже видно.",
+  "file": "/Users/blanc/diamond-demo/video/voice/10_edit_9bb7fb118dd4.mp3",
+  "dur": 7.152
+ },
+ {
+  "id": "outro",
+  "text": "Сайт и CRM уже готовы и защищены. Могу показать всё вживую за пятнадцать минут. Спасибо!",
+  "file": "/Users/blanc/diamond-demo/video/voice/11_outro_d1fa728fc69a.mp3",
+  "dur": 5.712
+ }
+]

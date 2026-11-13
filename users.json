@@ -1,0 +1,18 @@
+{
+  "owner": {
+    "salt": "b1ac70b813c4e39ce93c23d0af524e77",
+    "hash": "f952b0ad353cb6fbe3a76ff70a64837d33342dc4e8c39cb24de8a0c91b9eba11",
+    "role": "owner",
+    "name": "Владелец",
+    "mustChange": false,
+    "created": "2026-11-13 09:45"
+  },
+  "clinic": {
+    "salt": "294b951c991899d6834f85162fe23f2e",
+    "hash": "7d20cf59daef7a8a270bfe68517d5f746f5c5737257a83c8559c2168567fc67b",
+    "role": "owner",
+    "name": "Клиника (демо)",
+    "mustChange": false,
+    "created": "2026-11-13 10:41"
+  }
+}

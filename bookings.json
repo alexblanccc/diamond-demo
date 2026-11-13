@@ -1,0 +1,90 @@
+[
+  {
+    "id": 1794507316928,
+    "created": "2026-11-12 23:15",
+    "name": "Айдана",
+    "phone": "7055808170",
+    "service": "Лечение кариеса",
+    "date": "20.11 (пт) в 14:00",
+    "comment": "Зуб реагирует на холодное",
+    "channel": "whatsapp",
+    "status": "new",
+    "source": "whatsapp",
+    "amount": 0,
+    "doctor": "",
+    "notes": [],
+    "history": [
+      {
+        "at": "2026-11-12 23:15",
+        "to": "new",
+        "by": "site"
+      },
+      {
+        "at": "2026-11-13 10:10",
+        "from": "new",
+        "to": "booked",
+        "by": "owner"
+      },
+      {
+        "at": "2026-11-13 10:10",
+        "from": "booked",
+        "to": "new",
+        "by": "owner"
+      },
+      {
+        "at": "2026-11-13 10:10",
+        "from": "new",
+        "to": "booked",
+        "by": "owner"
+      },
+      {
+        "at": "2026-11-13 10:10",
+        "from": "booked",
+        "to": "new",
+        "by": "owner"
+      }
+    ],
+    "updated": "2026-11-13 10:10"
+  },
+  {
+    "id": 1794509372544,
+    "created": "2026-11-12 23:49",
+    "name": "Алина",
+    "phone": "+7051234567",
+    "service": "",
+    "date": "13 ноя (пт) в 14:00",
+    "comment": "",
+    "channel": "whatsapp",
+    "status": "contacted",
+    "source": "whatsapp",
+    "amount": 0,
+    "doctor": "",
+    "notes": [],
+    "history": [
+      {
+        "at": "2026-11-12 23:49",
+        "to": "new",
+        "by": "site"
+      },
+      {
+        "at": "2026-11-13 01:24",
+        "from": "new",
+        "to": "contacted",
+        "by": "admin"
+      },
+      {
+        "at": "2026-11-13 01:24",
+        "from": "contacted",
+        "to": "new",
+        "by": "admin"
+      },
+      {
+        "at": "2026-11-13 10:10",
+        "from": "new",
+        "to": "contacted",
+        "by": "owner"
+      }
+    ],
+    "updated": "2026-11-13 10:10"
+  }
+]

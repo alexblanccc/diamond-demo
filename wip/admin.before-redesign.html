@@ -1,0 +1,423 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Diamond. Админка</title>
+<style>
+:root{--teal:#0e9f9a;--teal-d:#0a7a76;--ink:#0b2f31;--muted:#5a7577;--line:#d6ebea;--alt:#eef9f8;--sos:#e5484d}
+*{box-sizing:border-box}
+body{margin:0;font:15px/1.5 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Arial,sans-serif;color:var(--ink);background:var(--alt)}
+.bar{position:sticky;top:0;z-index:5;background:#fff;border-bottom:1px solid var(--line);padding:10px 16px;display:flex;gap:12px;align-items:center;flex-wrap:wrap}
+.bar b{font-size:17px}
+.bar a{color:var(--teal-d);font-size:14px}
+.tabs{display:flex;gap:6px;flex-wrap:wrap;width:100%}
+.tab{border:0;background:var(--alt);padding:7px 13px;border-radius:999px;font:inherit;font-size:14px;cursor:pointer;white-space:nowrap}
+.tab.on{background:var(--teal);color:#fff}
+main{max-width:1100px;margin:18px auto;padding:0 16px 80px}
+.box{background:#fff;border:1px solid var(--line);border-radius:14px;padding:16px;margin-bottom:16px}
+.login{max-width:340px;margin:80px auto;display:grid;gap:10px}
+input,select,textarea{font:inherit;padding:8px 10px;border:1.5px solid var(--line);border-radius:10px;width:100%;background:#fff;color:var(--ink)}
+input:focus,select:focus,textarea:focus{outline:none;border-color:var(--teal)}
+textarea{resize:vertical;min-height:60px}
+button{font:inherit;cursor:pointer}
+.pri{background:var(--teal);color:#fff;border:0;padding:9px 16px;border-radius:10px;font-weight:600}
+.sec{background:#fff;color:var(--teal-d);border:1.5px solid var(--teal);padding:7px 12px;border-radius:10px}
+.del{background:#fff;color:var(--sos);border:1.5px solid var(--sos);padding:7px 12px;border-radius:10px}
+.sm{padding:4px 10px;font-size:13px}
+button[disabled]{opacity:.35;cursor:default}
+.hint{color:var(--muted);font-size:13px}
+.hide{display:none}
+.head{display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin-bottom:12px}
+.head b{font-size:17px}
+.head .grow{flex:1}
+.item{border:1px solid var(--line);border-radius:12px;padding:12px;margin-bottom:12px;background:#fcfefe}
+.item.off{opacity:.55;background:#f6f6f6}
+.item-top{display:flex;gap:8px;align-items:center;margin-bottom:10px;flex-wrap:wrap}
+.item-top .num{font-weight:700;color:var(--muted);min-width:22px}
+.item-top .ttl{flex:1;font-weight:700;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;min-width:120px}
+.chk{display:inline-flex;gap:6px;align-items:center;font-size:13px;color:var(--muted)}
+.chk input{width:auto}
+.fields{display:grid;grid-template-columns:repeat(2,1fr);gap:10px}
+.f{display:grid;gap:4px;font-size:12px;color:var(--muted)}
+.f.wide{grid-column:1 / -1}
+.pair{grid-column:1 / -1;display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.pair .f span::after{content:" · RU";color:var(--teal-d)}
+.pair .f + .f span::after{content:" · KZ";color:#b06d00}
+.img-f{display:grid;grid-template-columns:56px 1fr auto;gap:8px;align-items:center}
+.img-f .th{width:56px;height:56px;border-radius:8px;background:var(--alt) center/cover no-repeat;border:1px solid var(--line)}
+.upl{position:relative;overflow:hidden}
+.upl input{position:absolute;inset:0;opacity:0;cursor:pointer}
+table{width:100%;border-collapse:collapse}
+th,td{text-align:left;padding:10px 8px;border-bottom:1px solid var(--line);vertical-align:top}
+th{font-size:12px;color:var(--muted);text-transform:uppercase;letter-spacing:.04em}
+.st{border-radius:999px;padding:2px 9px;font-size:12px;font-weight:600;display:inline-block;margin-top:4px}
+.st-wa{background:#d9f3e3;color:#137a3b}
+.st-site{background:#e3e9ff;color:#3047b0}
+.toast{position:fixed;right:16px;bottom:16px;background:var(--ink);color:#fff;padding:10px 16px;border-radius:10px;opacity:0;transition:opacity .2s;z-index:20}
+.toast.on{opacity:1}
+.sched-day{display:flex;gap:16px;align-items:center;flex-wrap:wrap;margin:10px 0 12px;font-size:16px}
+.sched-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(120px,1fr));gap:8px}
+.sched-grid.closed{opacity:.35;pointer-events:none}
+.sl{display:grid;gap:2px;text-align:left;border:1.5px solid var(--line);background:#fff;border-radius:10px;padding:8px 10px;font:inherit;color:var(--ink)}
+button.sl{cursor:pointer}
+button.sl:hover{border-color:var(--teal)}
+.sl b{font-size:15px}
+.sl span{font-size:12px;color:var(--muted);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.sl small{font-size:11px;color:var(--teal-d)}
+.sl-book{background:#e6f7f5;border-color:#9edbd6}
+.sl-book span{color:var(--ink);font-weight:600}
+.sl-block{background:repeating-linear-gradient(135deg,#f3f3f3 0 6px,#e9e9e9 6px 12px);border-color:#ddd}
+.sched-legend{display:flex;gap:16px;flex-wrap:wrap;margin-top:12px;font-size:13px;color:var(--muted)}
+.sched-legend i{display:inline-block;width:16px;height:12px;border-radius:3px;margin-right:6px;vertical-align:-1px;border:1px solid var(--line)}
+.lg-free{background:#fff}.lg-book{background:#e6f7f5}.lg-block{background:#e9e9e9}
+.savebar{position:fixed;left:0;right:0;bottom:0;background:#fff;border-top:1px solid var(--line);padding:10px 16px;display:flex;gap:10px;align-items:center;justify-content:flex-end;z-index:6;transform:translateY(100%);transition:transform .25s}
+.savebar.on{transform:none}
+.savebar span{margin-right:auto;color:#8a5a00;font-size:14px}
+@media(max-width:720px){
+  .fields,.pair{grid-template-columns:1fr}
+  thead{display:none}
+  table,tbody,tr,td{display:block}
+  tr{border-bottom:1px solid var(--line);padding:8px 0}
+  td{border:0;padding:2px 0}
+}
+</style>
+</head>
+<body>
+<div class="login box" id="login">
+  <b>Diamond. Вход в админку</b>
+  <input id="pass" type="password" placeholder="Пароль" autocomplete="current-password">
+  <button class="pri" id="loginBtn">Войти</button>
+  <span class="hint" id="loginErr"></span>
+</div>
+
+<div id="app" class="hide">
+  <div class="bar">
+    <b>Diamond · админка</b>
+    <span class="hint" id="intState"></span>
+    <a href="/" target="_blank" rel="noopener">Открыть сайт ↗</a>
+    <div class="tabs" id="tabs"></div>
+  </div>
+  <main id="main"></main>
+</div>
+<div class="savebar" id="savebar"><span>Есть несохранённые изменения</span><button class="sec" id="discardBtn">Отменить</button><button class="pri" id="saveBtn">Сохранить</button></div>
+<div class="toast" id="toast"></div>
+
+<script>
+const $ = (id) => document.getElementById(id);
+const esc = (s) => String(s ?? "").replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
+let pass = "";
+try { pass = sessionStorage.getItem("dd-pass") || ""; } catch (e) {}
+let site = {};
+let tab = "bookings";
+let dirty = false;
+
+const SCHEMA = {
+  promos: {
+    label: "Акции", hint: "Карточки акций вверху блока «Услуги». Если указать дату окончания, акция сама исчезнет с сайта на следующий день.",
+    title: (x) => x.title,
+    fields: [
+      { k: "title", l: "Название", bi: 1 }, { k: "price", l: "Крупная цифра (цена или «бесплатно»)", bi: 1 },
+      { k: "note", l: "Подпись", bi: 1 }, { k: "tag", l: "Метка в углу (Акция, Kaspi…)", bi: 1 },
+      { k: "until", l: "Действует до (пусто: бессрочно)", t: "date" }, { k: "img", l: "Фоновое фото", t: "img" },
+    ],
+  },
+  services: {
+    label: "Услуги", hint: "Цена необязательна. Пишите «от 12 000 ₸» для минимальной цены. Если цены нет, можно заполнить метку, например «В день обращения».",
+    title: (x) => x.title,
+    fields: [
+      { k: "title", l: "Название", bi: 1 }, { k: "desc", l: "Описание", bi: 1, t: "area" },
+      { k: "price", l: "Цена", bi: 1 }, { k: "tag", l: "Метка вместо цены", bi: 1 },
+    ],
+  },
+  doctors: {
+    label: "Врачи", hint: "Без фото показывается нарисованный аватар. Фото лучше вертикальное, лицо в верхней части.",
+    title: (x) => x.name,
+    fields: [
+      { k: "name", l: "ФИО", bi: 1 }, { k: "role", l: "Специальность", bi: 1 },
+      { k: "exp", l: "Опыт, чем занимается", bi: 1, t: "area" }, { k: "photo", l: "Фото", t: "img" },
+      { k: "avatar", l: "Аватар без фото", t: "select", o: [["m", "Мужчина"], ["f", "Женщина"], ["f2", "Женщина 2"], ["f3", "Женщина 3"]] },
+    ],
+  },
+  reviews: {
+    label: "Отзывы", hint: "Скопируйте отзыв из 2ГИС: имя, дату, оценку и текст. На сайте показываются только отзывы с оценкой не ниже указанной в «Настройках» (сейчас 5), самые свежие первыми. Пишите имя как в 2ГИС, без фамилии.",
+    title: (x) => (x.author || "Без имени") + (x.date ? " · " + x.date : "") + " · " + "★".repeat(+x.rating || 0),
+    fields: [
+      { k: "author", l: "Имя автора" }, { k: "date", l: "Дата отзыва", t: "date" },
+      { k: "rating", l: "Оценка", t: "select", o: [["5", "5 звёзд"], ["4", "4 звезды"], ["3", "3 звезды"], ["2", "2 звезды"], ["1", "1 звезда"]] },
+      { k: "service", l: "Услуга (необязательно)" },
+      { k: "text", l: "Текст отзыва", t: "area", wide: 1 },
+      { k: "url", l: "Ссылка на отзыв в 2ГИС (необязательно)", wide: 1 },
+    ],
+  },
+  trust: {
+    label: "Безопасность", hint: "Тёмный блок «Безопасность и гарантии». Каждый пункт списка с новой строки.",
+    title: (x) => x.title,
+    fields: [
+      { k: "title", l: "Заголовок", bi: 1 }, { k: "items", l: "Пункты (по одному в строке)", bi: 1, t: "lines" },
+      { k: "icon", l: "Иконка", t: "select", o: [["shield", "Щит (стерильность)"], ["scan", "Снимок (оборудование)"], ["badge", "Медаль (гарантии)"]] },
+    ],
+  },
+  faq: {
+    label: "Вопросы", hint: "Блок «Частые вопросы». Первый вопрос на сайте открыт по умолчанию.",
+    title: (x) => x.q,
+    fields: [{ k: "q", l: "Вопрос", bi: 1 }, { k: "a", l: "Ответ", bi: 1, t: "area" }],
+  },
+  reels: {
+    label: "Рилсы", hint: "Карусель «Diamond в Instagram». Если Instagram не даёт встроить видео, снимите галочку «Открывать на сайте», и по клику оно откроется в Instagram.",
+    title: (x) => x.title || x.url,
+    fields: [
+      { k: "url", l: "Ссылка на рилс", wide: 1 }, { k: "title", l: "Подпись на карточке" }, { k: "views", l: "Просмотры" },
+      { k: "cover", l: "Обложка", t: "img" }, { k: "embed", l: "Открывать на сайте", t: "check", def: true },
+    ],
+  },
+};
+const SETTINGS = [
+  ["Основное", [["name", "Название"], ["tagline", "Подпись под логотипом", 1], ["about", "Текст «О клинике»", 1, "area"]]],
+  ["Контакты", [["phone", "Телефон"], ["whatsapp", "WhatsApp (только цифры)"], ["instagram", "Instagram (логин)"], ["address", "Адрес", 1], ["hours", "Время работы", 1], ["firmId", "ID в 2ГИС"], ["lat", "Широта"], ["lon", "Долгота"]]],
+  ["Первый экран", [["promoBadge", "Плашка Kaspi", 1], ["promoTitle", "Заголовок", 1], ["promoText", "Подзаголовок", 1, "area"]]],
+  ["Рейтинг и отзывы", [["rating", "Рейтинг в 2ГИС"], ["reviews", "Число оценок"], ["reviewsText", "Число отзывов"], ["reviewsMinRating", "Показывать отзывы от (звёзд)"], ["reviewsLimit", "Сколько отзывов показывать"], ["followers", "Подписчики Instagram", 1]]],
+  ["Прочее", [["emergencyText", "Текст «Срочная помощь»", 1, "area"], ["license", "Лицензия (в подвале)", 1, "area"]]],
+];
+const TABS = [["bookings", "Записи"], ["schedule", "Расписание"], ["settings", "Настройки"], ...Object.entries(SCHEMA).map(([k, v]) => [k, v.label])];
+
+function toast(t) { const el = $("toast"); el.textContent = t; el.classList.add("on"); setTimeout(() => el.classList.remove("on"), 2000); }
+function setDirty(v) { dirty = v; $("savebar").classList.toggle("on", v); }
+
+async function api(path, body) {
+  const opt = { headers: { "X-Admin-Pass": pass, "Content-Type": "application/json" } };
+  if (body) { opt.method = "POST"; opt.body = JSON.stringify(body); }
+  const r = await fetch(path, opt);
+  if (r.status === 401) throw new Error("auth");
+  const j = await r.json();
+  if (!r.ok) throw new Error(j.error || "Ошибка");
+  return j;
+}
+
+async function enter() {
+  try { await api("/api/admin/ping", {}); }
+  catch (e) {
+    $("loginErr").textContent = pass ? "Неверный пароль" : "";
+    $("login").classList.remove("hide"); $("app").classList.add("hide");
+    return;
+  }
+  try { sessionStorage.setItem("dd-pass", pass); } catch (e) {}
+  $("login").classList.add("hide"); $("app").classList.remove("hide");
+  await reloadSite();
+  renderTabs(); render();
+}
+async function reloadSite() { site = await (await fetch("/api/site", { cache: "no-store" })).json(); }
+$("loginBtn").onclick = () => { pass = $("pass").value; enter(); };
+$("pass").addEventListener("keydown", (e) => { if (e.key === "Enter") $("loginBtn").click(); });
+
+function renderTabs() {
+  $("tabs").innerHTML = TABS.map(([k, l]) => `<button class="tab ${k === tab ? "on" : ""}" data-t="${k}">${l}</button>`).join("");
+  $("tabs").querySelectorAll(".tab").forEach((b) => b.onclick = () => {
+    if (dirty && !confirm("Есть несохранённые изменения. Перейти без сохранения?")) return;
+    setDirty(false); tab = b.dataset.t; renderTabs(); render();
+  });
+}
+
+function render() {
+  if (tab === "bookings") return renderBookings();
+  if (tab === "schedule") return renderSchedule();
+  if (tab === "settings") return renderSettings();
+  renderList(tab);
+}
+
+async function renderBookings() {
+  $("main").innerHTML = `<section class="box"><div class="head"><b>Заявки</b><span class="hint" id="cnt"></span><span class="grow"></span><button class="sec" id="reload">Обновить</button></div><table><thead><tr><th>Когда</th><th>Пациент</th><th>Услуга</th><th>Желаемое время</th><th>Статус</th></tr></thead><tbody id="rows"></tbody></table><p class="hint" id="empty"></p></section>`;
+  $("reload").onclick = renderBookings;
+  const d = await api("/api/admin/bookings");
+  const parts = [d.telegram ? "Telegram: подключён" : "Telegram: нет", d.webhook ? "CRM-вебхук: подключён" : "CRM-вебхук: нет"];
+  $("intState").textContent = parts.join(" · ");
+  $("cnt").textContent = d.items.length ? "всего " + d.items.length : "";
+  $("empty").textContent = d.items.length ? "" : "Пока заявок нет.";
+  const LABEL = { new: "Новая", confirmed: "Подтверждена", done: "Пришёл", cancelled: "Отмена" };
+  $("rows").innerHTML = d.items.map((b) => `<tr>
+    <td>${esc(b.created)}<br><span class="st ${b.channel === "whatsapp" ? "st-wa" : "st-site"}">${b.channel === "whatsapp" ? "WhatsApp" : "Сайт"}</span></td>
+    <td><b>${esc(b.name)}</b>${b.phone ? `<br><a href="tel:${esc(b.phone)}">${esc(b.phone)}</a>` : ""}${b.comment ? `<br><span class="hint">${esc(b.comment)}</span>` : ""}</td>
+    <td>${esc(b.service || "-")}</td><td>${esc(b.date || "-")}${b.day && b.time ? `<br><span class="hint">слот занят в расписании</span>` : ""}</td>
+    <td><select data-id="${b.id}">${Object.keys(LABEL).map((k) => `<option value="${k}" ${b.status === k ? "selected" : ""}>${LABEL[k]}</option>`).join("")}</select></td>
+  </tr>`).join("");
+  $("rows").querySelectorAll("select").forEach((s) => s.onchange = async () => { await api("/api/admin/status", { id: Number(s.dataset.id), status: s.value }); toast("Статус обновлён"); });
+}
+
+const DOW = ["Воскресенье", "Понедельник", "Вторник", "Среда", "Четверг", "Пятница", "Суббота"];
+const MON = ["января", "февраля", "марта", "апреля", "мая", "июня", "июля", "августа", "сентября", "октября", "ноября", "декабря"];
+let schedDay = (() => { const d = new Date(); return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, "0")}-${String(d.getDate()).padStart(2, "0")}`; })();
+function shiftDay(iso, n) {
+  const d = new Date(iso + "T00:00"); d.setDate(d.getDate() + n);
+  return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, "0")}-${String(d.getDate()).padStart(2, "0")}`;
+}
+async function renderSchedule() {
+  const d = new Date(schedDay + "T00:00");
+  const j = await api("/api/admin/schedule?day=" + schedDay);
+  const blocked = new Set(j.blocked);
+  $("main").innerHTML = `<section class="box">
+    <div class="head"><b>Расписание</b><span class="grow"></span>
+      <button class="sec" id="dPrev">‹</button>
+      <input type="date" id="dPick" value="${schedDay}" style="width:auto">
+      <button class="sec" id="dNext">›</button>
+      <button class="sec" id="dToday">Сегодня</button>
+    </div>
+    <p class="hint">Нажмите на свободное время, чтобы закрыть его для записи (перерыв, врач занят), и ещё раз, чтобы открыть. Время с заявками закрывается само, а освобождается, если в «Записях» поставить статус «Отмена».</p>
+    <div class="sched-day"><b>${DOW[d.getDay()]}, ${d.getDate()} ${MON[d.getMonth()]}</b>
+      ${j.slots.length ? `<label class="chk"><input type="checkbox" id="dClosed" ${j.closed ? "checked" : ""}>Закрыть весь день</label>` : `<span class="hint">Выходной день по графику клиники</span>`}
+    </div>
+    <div class="sched-grid ${j.closed ? "closed" : ""}">${j.slots.map((t) => {
+      const b = j.booked[t];
+      if (b) return `<div class="sl sl-book" title="${esc(b.service || "")}"><b>${t}</b><span>${esc(b.name)}</span><small>${b.status === "confirmed" ? "подтверждена" : "новая заявка"}</small></div>`;
+      return `<button class="sl ${blocked.has(t) ? "sl-block" : ""}" data-t="${t}"><b>${t}</b><span>${blocked.has(t) ? "закрыто" : "свободно"}</span></button>`;
+    }).join("")}</div>
+    <div class="sched-legend"><span><i class="lg-free"></i>свободно</span><span><i class="lg-book"></i>заявка</span><span><i class="lg-block"></i>закрыто вручную</span></div>
+  </section>`;
+  const save = async () => {
+    await api("/api/admin/schedule", { day: schedDay, blocked: [...blocked], closed: $("dClosed") ? $("dClosed").checked : false });
+    toast("Расписание обновлено, на сайте уже видно");
+  };
+  $("main").querySelectorAll(".sl[data-t]").forEach((b) => b.onclick = async () => {
+    const t = b.dataset.t;
+    if (blocked.has(t)) blocked.delete(t); else blocked.add(t);
+    b.classList.toggle("sl-block", blocked.has(t));
+    b.querySelector("span").textContent = blocked.has(t) ? "закрыто" : "свободно";
+    await save();
+  });
+  if ($("dClosed")) $("dClosed").onchange = async () => { $("main").querySelector(".sched-grid").classList.toggle("closed", $("dClosed").checked); await save(); };
+  $("dPrev").onclick = () => { schedDay = shiftDay(schedDay, -1); renderSchedule(); };
+  $("dNext").onclick = () => { schedDay = shiftDay(schedDay, 1); renderSchedule(); };
+  $("dToday").onclick = () => { const n = new Date(); schedDay = `${n.getFullYear()}-${String(n.getMonth() + 1).padStart(2, "0")}-${String(n.getDate()).padStart(2, "0")}`; renderSchedule(); };
+  $("dPick").onchange = (e) => { if (e.target.value) { schedDay = e.target.value; renderSchedule(); } };
+}
+
+function input(k, val, t, extra = "") {
+  if (t === "area") return `<textarea data-k="${k}" ${extra}>${esc(val)}</textarea>`;
+  if (t === "lines") return `<textarea data-k="${k}" data-lines="1" ${extra}>${esc((val || []).join("\n"))}</textarea>`;
+  if (t === "date") return `<input type="date" data-k="${k}" value="${esc(val)}" ${extra}>`;
+  return `<input data-k="${k}" value="${esc(val)}" ${extra}>`;
+}
+function fieldHtml(f, x) {
+  if (f.bi) {
+    return `<div class="pair"><label class="f"><span>${f.l}</span>${input(f.k, x[f.k], f.t)}</label><label class="f"><span>${f.l}</span>${input(f.k + "_kz", x[f.k + "_kz"], f.t, 'placeholder="если пусто, покажем русский"')}</label></div>`;
+  }
+  if (f.t === "img") {
+    return `<label class="f ${f.wide ? "wide" : ""}"><span>${f.l}</span><div class="img-f"><div class="th" style="background-image:${x[f.k] ? `url('/${esc(x[f.k])}')` : "none"}"></div>${input(f.k, x[f.k], "text", 'placeholder="img/… или загрузите файл"')}<span class="sec sm upl">Загрузить<input type="file" accept="image/jpeg,image/png,image/webp" data-up="${f.k}"></span></div></label>`;
+  }
+  if (f.t === "select") {
+    return `<label class="f"><span>${f.l}</span><select data-k="${f.k}">${f.o.map(([v, l]) => `<option value="${v}" ${x[f.k] === v ? "selected" : ""}>${l}</option>`).join("")}</select></label>`;
+  }
+  if (f.t === "check") {
+    const on = x[f.k] === undefined ? f.def : x[f.k] !== false;
+    return `<label class="f"><span>&nbsp;</span><span class="chk"><input type="checkbox" data-k="${f.k}" data-check="1" ${on ? "checked" : ""}>${f.l}</span></label>`;
+  }
+  return `<label class="f ${f.wide ? "wide" : ""}"><span>${f.l}</span>${input(f.k, x[f.k], f.t)}</label>`;
+}
+
+function readItem(el, base) {
+  const out = { ...base };
+  el.querySelectorAll("[data-k]").forEach((i) => {
+    if (i.dataset.check) out[i.dataset.k] = i.checked;
+    else if (i.dataset.lines) out[i.dataset.k] = i.value.split("\n").map((s) => s.trim()).filter(Boolean);
+    else out[i.dataset.k] = i.value;
+  });
+  const h = el.querySelector("[data-hidden]");
+  out.hidden = h ? h.checked : false;
+  return out;
+}
+function readList(key) {
+  const list = site[key] || [];
+  return [...document.querySelectorAll("#list .item")].map((el) => readItem(el, list[+el.dataset.i] || {}));
+}
+
+function renderList(key) {
+  const S = SCHEMA[key];
+  const list = site[key] || [];
+  $("main").innerHTML = `<section class="box">
+    <div class="head"><b>${S.label}</b><span class="hint">${list.length} шт.</span><span class="grow"></span><button class="sec" id="addBtn">+ Добавить</button></div>
+    <p class="hint" style="margin-top:-4px">${S.hint}</p>
+    ${key === "reels" ? `<div class="item"><b>Быстрый импорт</b><p class="hint">Вставьте текст со ссылками на рилсы, лишнее отбросится, повторы не добавятся.</p><textarea id="bulk" rows="3" placeholder="https://www.instagram.com/reel/..."></textarea><p><button class="sec" id="bulkBtn">Добавить ссылки</button> <span class="hint" id="bulkHint"></span></p></div>` : ""}
+    <div id="list">${list.map((x, i) => `<div class="item ${x.hidden ? "off" : ""}" data-i="${i}">
+      <div class="item-top"><span class="num">${i + 1}</span><span class="ttl">${esc(S.title(x) || "Без названия")}</span>
+        <label class="chk"><input type="checkbox" data-hidden="1" ${x.hidden ? "checked" : ""}>Скрыть на сайте</label>
+        <button class="sec sm" data-mv="-1" ${i === 0 ? "disabled" : ""}>↑</button><button class="sec sm" data-mv="1" ${i === list.length - 1 ? "disabled" : ""}>↓</button><button class="del sm" data-del="1">Удалить</button></div>
+      <div class="fields">${S.fields.map((f) => fieldHtml(f, x)).join("")}</div>
+    </div>`).join("") || `<p class="hint">Пусто. Нажмите «Добавить».</p>`}</div>
+  </section>`;
+
+  const listEl = $("list");
+  listEl.addEventListener("input", () => setDirty(true));
+  listEl.addEventListener("change", (e) => {
+    setDirty(true);
+    if (e.target.dataset.hidden) e.target.closest(".item").classList.toggle("off", e.target.checked);
+  });
+  listEl.querySelectorAll(".item").forEach((el) => {
+    const i = +el.dataset.i;
+    el.querySelectorAll("[data-mv]").forEach((b) => b.onclick = () => {
+      const cur = readList(key); const j = i + +b.dataset.mv;
+      [cur[i], cur[j]] = [cur[j], cur[i]]; site[key] = cur; setDirty(true); renderList(key); setDirty(true);
+    });
+    el.querySelector("[data-del]").onclick = () => {
+      if (!confirm("Удалить этот пункт?")) return;
+      const cur = readList(key); cur.splice(i, 1); site[key] = cur; renderList(key); setDirty(true);
+    };
+    el.querySelectorAll("[data-up]").forEach((inp) => inp.onchange = async () => {
+      const file = inp.files[0]; if (!file) return;
+      if (file.size > 5_000_000) { toast("Файл больше 5 МБ"); return; }
+      const data = await new Promise((res) => { const r = new FileReader(); r.onload = () => res(r.result); r.readAsDataURL(file); });
+      try {
+        const j = await api("/api/admin/upload", { type: file.type, data });
+        const field = el.querySelector(`[data-k="${inp.dataset.up}"]`);
+        field.value = j.path;
+        field.closest(".img-f").querySelector(".th").style.backgroundImage = `url('/${j.path}')`;
+        setDirty(true); toast("Фото загружено, не забудьте сохранить");
+      } catch (e) { toast(e.message); }
+    });
+  });
+  $("addBtn").onclick = () => {
+    const cur = readList(key); const blank = {};
+    S.fields.forEach((f) => { blank[f.k] = f.t === "lines" ? [] : f.t === "check" ? !!f.def : ""; });
+    if (key === "doctors") blank.avatar = "m";
+    if (key === "trust") blank.icon = "shield";
+    cur.push(blank); site[key] = cur; renderList(key); setDirty(true);
+    const items = document.querySelectorAll("#list .item"); items[items.length - 1].scrollIntoView({ behavior: "smooth", block: "center" });
+  };
+  if (key === "reels") {
+    $("bulkBtn").onclick = () => {
+      const re = /instagram\.com\/(?:[A-Za-z0-9_.]+\/)?(reel|reels|p|tv)\/([A-Za-z0-9_-]{5,20})/g;
+      const found = [...new Set([...$("bulk").value.matchAll(re)].map((m) => `https://www.instagram.com/${m[1] === "p" ? "p" : "reel"}/${m[2]}/`))];
+      const cur = readList(key); const have = cur.map((r) => r.url);
+      const fresh = found.filter((u) => !have.includes(u)).map((url) => ({ url, cover: "", title: "", views: "", embed: true }));
+      if (!found.length) { $("bulkHint").textContent = "Ссылок не нашлось."; return; }
+      site[key] = [...fresh, ...cur]; renderList(key); setDirty(true);
+      $("bulkHint").textContent = fresh.length ? `Добавлено: ${fresh.length}. Нажмите «Сохранить».` : "Эти рилсы уже есть.";
+    };
+  }
+}
+
+function renderSettings() {
+  const s = site.settings || {};
+  $("main").innerHTML = SETTINGS.map(([g, fields]) => `<section class="box"><div class="head"><b>${g}</b></div><div class="fields" id="set-${g}">${fields.map(([k, l, bi, t]) => fieldHtml({ k, l, bi, t, wide: !bi && t === "area" }, s)).join("")}</div></section>`).join("");
+  $("main").addEventListener("input", () => setDirty(true));
+}
+function readSettings() {
+  const out = { ...(site.settings || {}) };
+  $("main").querySelectorAll("[data-k]").forEach((i) => { out[i.dataset.k] = i.value; });
+  ["lat", "lon"].forEach((k) => { const n = parseFloat(out[k]); if (!isNaN(n)) out[k] = n; });
+  ["reviews", "reviewsText", "reviewsMinRating", "reviewsLimit"].forEach((k) => { const n = parseInt(out[k], 10); if (!isNaN(n)) out[k] = n; });
+  return out;
+}
+
+$("saveBtn").onclick = async () => {
+  try {
+    if (tab === "settings") { await api("/api/admin/site", { settings: readSettings() }); }
+    else if (SCHEMA[tab]) { await api("/api/admin/site", { [tab]: readList(tab) }); }
+    await reloadSite(); setDirty(false); render(); toast("Сохранено. Обновите сайт, чтобы увидеть изменения.");
+  } catch (e) { toast("Не сохранилось: " + e.message); }
+};
+$("discardBtn").onclick = async () => { await reloadSite(); setDirty(false); render(); };
+window.addEventListener("beforeunload", (e) => { if (dirty) { e.preventDefault(); e.returnValue = ""; } });
+
+if (pass) enter();
+</script>
+</body>
+</html>

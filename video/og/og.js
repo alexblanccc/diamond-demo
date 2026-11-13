@@ -1,0 +1,2 @@
+const path=require('path');const {chromium}=require(path.join(process.env.HOME,'Documents/Novosti/video/node_modules/playwright'));
+(async()=>{const b=await chromium.launch({channel:'chrome'});const p=await b.newPage({viewport:{width:1200,height:630}});await p.goto('file://'+path.join(__dirname,'og.html'));await p.waitForTimeout(500);await p.screenshot({path:path.join(__dirname,'../../static/img/og.jpg'),type:'jpeg',quality:88});await b.close();})();

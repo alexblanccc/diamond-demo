@@ -1,0 +1,25 @@
+[Unit]
+Description=Diamond site and CRM
+After=network-online.target
+
+[Service]
+User=diamond
+Group=diamond
+WorkingDirectory=/opt/diamond
+EnvironmentFile=/etc/diamond.env
+ExecStart=/usr/bin/python3 /opt/diamond/server.py
+Restart=always
+RestartSec=3
+UMask=0077
+NoNewPrivileges=true
+PrivateTmp=true
+ProtectSystem=strict
+ProtectHome=true
+ReadWritePaths=/opt/diamond
+ProtectKernelTunables=true
+ProtectControlGroups=true
+RestrictSUIDSGID=true
+LockPersonality=true
+
+[Install]
+WantedBy=multi-user.target

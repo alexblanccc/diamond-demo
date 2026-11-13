@@ -1,0 +1,53 @@
+{
+ "file": "/Users/blanc/diamond-demo/video/raw/page@35d98f1e34d6b7efb3536e39cc455644.webm",
+ "marks": [
+  {
+   "id": "hero",
+   "start": 1.249
+  },
+  {
+   "id": "services",
+   "start": 9.009
+  },
+  {
+   "id": "doctors",
+   "start": 15.375
+  },
+  {
+   "id": "lang",
+   "start": 23.226
+  },
+  {
+   "id": "reels",
+   "start": 28.244
+  },
+  {
+   "id": "book",
+   "start": 34.564
+  },
+  {
+   "id": "submit",
+   "start": 43.948
+  },
+  {
+   "id": "crm",
+   "start": 50.081
+  },
+  {
+   "id": "pipeline",
+   "start": 59.327
+  },
+  {
+   "id": "stats",
+   "start": 68.618
+  },
+  {
+   "id": "edit",
+   "start": 76.378
+  },
+  {
+   "id": "outro",
+   "start": 84.232
+  }
+ ]
+}
