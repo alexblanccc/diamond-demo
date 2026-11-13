@@ -307,16 +307,19 @@ function initLang() {
 async function load() {
   try {
     const res = await fetch("/api/site");
-    if (res.ok) {
-      SITE_DATA = await res.json();
-    } else {
-      SITE_DATA = await (await fetch("data.json")).json();
-    }
+    if (!res.ok) throw new Error();
+    SITE_DATA = await res.json();
   } catch (e) {
-    try {
-      SITE_DATA = await (await fetch("data.json")).json();
-    } catch (e2) {
-      SITE_DATA = {};
+    const localSaved = localStorage.getItem("diamond_site_data");
+    if (localSaved) {
+      try { SITE_DATA = JSON.parse(localSaved); } catch(err) {}
+    }
+    if (!SITE_DATA || !SITE_DATA.settings) {
+      try {
+        SITE_DATA = await (await fetch("data.json", { cache: "no-store" })).json();
+      } catch (e2) {
+        SITE_DATA = {};
+      }
     }
   }
   S = SITE_DATA.settings || {};
@@ -457,7 +460,7 @@ function renderReviews() {
       ${r.service ? `<span class="rev-svc">${esc(r.service)}</span>` : ""}
       <p class="rev-text">${esc(r.text)}</p>
       <button type="button" class="rev-more" hidden>${more}</button>
-      <footer>${r.url ? `<a href="${esc(r.url)}" target="_blank" rel="noopener">${isKz ? "2ГИС-те ашу" : "Открыть в 2ГИС"}</a>` : `<span class="rev-from"><span class="gis-dot"></span>2ГИС</span>`}</footer>
+      <footer><a href="${esc(r.url || "https://2gis.kz/pavlodar/firm/70000001083785122/tab/reviews")}" target="_blank" rel="noopener">${isKz ? "2ГИС-те ашу" : "Открыть в 2ГИС"}</a></footer>
     </article>`;
   }).join("");
 
